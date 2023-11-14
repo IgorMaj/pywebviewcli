@@ -1,4 +1,12 @@
 import webview
+
+# Path Start (Necessary so it works as a wheel)
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+# Path End
+
 from js.methods import add_reload_listener, reload_window
 from loader.api import (
     add_api_root_to_path,
