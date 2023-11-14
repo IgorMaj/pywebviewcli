@@ -1,6 +1,6 @@
 import sys
 
-from loader.api import unload_module
+from pywebviewcli.loader.api import unload_module
 
 
 def test_unload_module():

@@ -1,7 +1,11 @@
 import webview
-from js.methods import add_reload_listener, reload_window
-from loader.api import add_api_root_to_path, load_module_from_file, reload_window_api
-from args.parser import config_parser
+from pywebviewcli.js.methods import add_reload_listener, reload_window
+from pywebviewcli.loader.api import (
+    add_api_root_to_path,
+    load_module_from_file,
+    reload_window_api,
+)
+from pywebviewcli.args.parser import config_parser
 
 
 def main():

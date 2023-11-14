@@ -4,7 +4,7 @@ from types import NoneType
 
 from dotenv import load_dotenv
 
-from translation.constants import (
+from pywebviewcli.translation.constants import (
     API_PATH_ARG_HELP,
     ENV_PATH_ARG_HELP,
     PROGRAM_DESCRIPTION,
