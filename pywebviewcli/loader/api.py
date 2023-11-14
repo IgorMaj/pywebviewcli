@@ -1,4 +1,5 @@
 import importlib.util
+import inspect
 import os
 from pathlib import Path
 import sys
@@ -26,16 +27,25 @@ def get_absolute_module_path(module: ModuleType):
         return ""
 
 
+def get_methods(module: ModuleType):
+    methods = [
+        getattr(module, func)
+        for func in dir(module)
+        if callable(getattr(module, func)) and inspect.isfunction(getattr(module, func))
+    ]
+    return methods
+
+
 def load_module_from_file(path: str):
-    spec = importlib.util.spec_from_file_location(
-        name="api.module",
-        location=path,
-        submodule_search_locations=["example_api"],
-    )
+    spec = importlib.util.spec_from_file_location(name="api.module", location=path)
     loaded_module = importlib.util.module_from_spec(spec)
     sys.modules["api.module"] = loaded_module
     spec.loader.exec_module(loaded_module)
     return loaded_module
+
+
+def load_module_api(path: str):
+    return get_methods(load_module_from_file(path))
 
 
 def unload_module(name: str):
@@ -52,5 +62,4 @@ def reload_window_api(window: webview.Window, api_file_path: str):
 
     for key in module_keys_to_unload:
         unload_module(key)
-
-    window._js_api = load_module_from_file(api_file_path)
+    window.expose(*load_module_api(api_file_path))
