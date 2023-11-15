@@ -52,6 +52,11 @@ def unload_module(name: str):
     del sys.modules[name]
 
 
+# unloads all user defined api methods
+def unload_user_api(window: webview.Window):
+    window._functions = {"reload_all": window._functions["reload_all"]}
+
+
 def reload_window_api(window: webview.Window, api_file_path: str):
     root_dir_path = get_api_root_dir_path(api_file_path)
     module_keys_to_unload = []
@@ -60,6 +65,9 @@ def reload_window_api(window: webview.Window, api_file_path: str):
         if absolute_module_path.startswith(root_dir_path):
             module_keys_to_unload.append(key)
 
+    unload_user_api(window)
+
     for key in module_keys_to_unload:
         unload_module(key)
+
     window.expose(*load_module_api(api_file_path))
