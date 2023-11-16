@@ -14,16 +14,20 @@ from loader.api import (
     reload_window_api,
 )
 from args.parser import config_parser
+from patch.qt import patch_on_load_finished
 
 
 def main():
     config_parser.parse_args()
     add_reload_listener()
+    patch_on_load_finished()
 
     if config_parser.api_path():
         add_api_root_to_path(config_parser.api_path())
 
-    window = webview.create_window(title=config_parser.title(), url=config_parser.url())
+    window = webview.create_window(
+        title=config_parser.title(), url=config_parser.url(), maximized=True
+    )
 
     def reload_all():
         if config_parser.api_path():

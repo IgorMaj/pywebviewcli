@@ -1,3 +1,4 @@
+PROGRAM_NAME = """pywebviewcli"""
 PROGRAM_DESCRIPTION = """This cli tool aims to provide a smooth development experience with pywebview 
 and frontend framework/setup of your choice. You can use the options below to pass arguments, an env path 
 or in-memory environment variables which correspond to the arguments:

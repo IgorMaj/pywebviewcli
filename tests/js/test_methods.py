@@ -2,16 +2,14 @@ import webview
 from pywebviewcli.js.methods import add_reload_listener, reload_window
 
 
-class MockWindow:
-    def __init__(self):
-        self.js = None
-        pass
-
-    def evaluate_js(self, new_js):
-        self.js = new_js
-
-
 def test_reload_window():
+    class MockWindow:
+        def __init__(self):
+            self.js = None
+
+        def evaluate_js(self, new_js):
+            self.js = new_js
+
     mock = MockWindow()
     reload_window(mock)
     assert mock.js == "location.reload();"

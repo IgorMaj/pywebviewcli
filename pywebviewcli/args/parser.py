@@ -9,6 +9,7 @@ from translation.constants import (
     ENV_PATH_ARG_HELP,
     PROGRAM_DESCRIPTION,
     PROGRAM_EPILOG,
+    PROGRAM_NAME,
     TITLE_ARG_HELP,
     URL_ARG_HELP,
 )
@@ -20,7 +21,7 @@ DEFAULT_TITLE = "App"
 class ConfigParser:
     def __init__(self) -> None:
         self.parser = argparse.ArgumentParser(
-            prog="pyweb-cli",
+            prog=PROGRAM_NAME,
             description=PROGRAM_DESCRIPTION,
             epilog=PROGRAM_EPILOG,
         )
