@@ -7,10 +7,10 @@ logger = logging.getLogger("pywebviewclistartup")
 
 
 def wait_for_server_startup(url: str, timeout: int):
-    logger.info(f"Waiting for {url} to load...")
+    logger.info(f" Waiting for {url} to load...")
     try:
         hostname, port = parse_hostname_and_port(url)
         wait_for_port(port=port, host=hostname, timeout=timeout)
     except:
         pass
-    logger.info(f"Done waiting for {url}  to load...")
+    logger.info(f" Done waiting for {url} to load...")
