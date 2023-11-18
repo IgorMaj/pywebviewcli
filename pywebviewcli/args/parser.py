@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from translation.constants import (
     API_PATH_ARG_HELP,
     ENV_PATH_ARG_HELP,
+    WAIT_TIMEOUT_ARG_HELP,
     PROGRAM_DESCRIPTION,
     PROGRAM_EPILOG,
     PROGRAM_NAME,
@@ -16,6 +17,7 @@ from translation.constants import (
 
 DEFAULT_URL = "http://localhost"
 DEFAULT_TITLE = "App"
+DEFAULT_WAIT_TIMEOUT = 10  # secs
 
 
 class ConfigParser:
@@ -28,6 +30,7 @@ class ConfigParser:
         self.parser.add_argument("-t", "--title", help=TITLE_ARG_HELP)
         self.parser.add_argument("-u", "--url", help=URL_ARG_HELP)
         self.parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
+        self.parser.add_argument("-wt", "--wait-timeout", help=WAIT_TIMEOUT_ARG_HELP)
         self.parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
         self._args = None
 
@@ -47,6 +50,11 @@ class ConfigParser:
 
     def api_path(self) -> str | NoneType:
         return self._args.api_path or os.getenv("API_PATH") or None
+
+    def wait_timeout(self):
+        return int(
+            self._args.wait_timeout or os.getenv("WAIT_TIMEOUT") or DEFAULT_WAIT_TIMEOUT
+        )
 
 
 config_parser = ConfigParser()

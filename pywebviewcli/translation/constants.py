@@ -12,3 +12,6 @@ The file can use both library and relative imports. Default: None."""
 ENV_PATH_ARG_HELP = (
     """Specify path to an .env file which contains arg env variables. Optional."""
 )
+WAIT_TIMEOUT_ARG_HELP = """The cli will wait for up x seconds for server to become available before starting the webview.
+If the server starts up before the timeout, the webview will appear
+Set to 0 to disable. Default: 10 secs."""

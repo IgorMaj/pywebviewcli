@@ -15,6 +15,7 @@ from loader.api import (
 )
 from args.parser import config_parser
 from patch.qt import patch_on_load_finished
+from loader.wait import wait_for_server_startup
 
 
 def main():
@@ -24,6 +25,9 @@ def main():
 
     if config_parser.api_path():
         add_api_root_to_path(config_parser.api_path())
+
+    if config_parser.wait_timeout():
+        wait_for_server_startup(config_parser.url(), config_parser.wait_timeout())
 
     window = webview.create_window(
         title=config_parser.title(), url=config_parser.url(), maximized=True
