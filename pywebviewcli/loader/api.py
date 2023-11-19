@@ -1,8 +1,10 @@
+import ctypes
 import importlib.util
 import inspect
 import os
 from pathlib import Path
 import sys
+import threading
 from types import ModuleType
 
 import webview
@@ -57,6 +59,29 @@ def unload_user_api(window: webview.Window):
     window._functions = {"reload_all": window._functions["reload_all"]}
 
 
+def is_main_thread(thread: threading.Thread):
+    return thread is threading.main_thread()
+
+
+def is_current_thread(thread: threading.Thread):
+    return thread is threading.current_thread()
+
+
+def terminate_thread(thread):
+    if not thread.is_alive():
+        return
+    thread_id = ctypes.c_long(thread.ident)
+    ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, ctypes.py_object(SystemExit))
+
+
+# api calls which run for a long time/forever spawn a thread, that needs to be killed on reload
+# Please bear in mind that this method is also part of an api call, so it runs in a thread of its own
+def stop_background_threads():
+    for thread in threading.enumerate():
+        if not is_main_thread(thread) and not is_current_thread(thread):
+            terminate_thread(thread)
+
+
 def reload_window_api(window: webview.Window, api_file_path: str):
     root_dir_path = get_api_root_dir_path(api_file_path)
     module_keys_to_unload = []
@@ -65,6 +90,7 @@ def reload_window_api(window: webview.Window, api_file_path: str):
         if absolute_module_path.startswith(root_dir_path):
             module_keys_to_unload.append(key)
 
+    stop_background_threads()
     unload_user_api(window)
 
     for key in module_keys_to_unload:
