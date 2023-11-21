@@ -15,6 +15,7 @@ from loader.api import (
 )
 from args.parser import config_parser
 from patch.qt import patch_on_load_finished
+from patch.gtk import patch_gtk_inspector
 from loader.wait import wait_for_server_startup
 
 
@@ -22,6 +23,7 @@ def main():
     config_parser.parse_args()
     add_reload_listener()
     patch_on_load_finished()
+    patch_gtk_inspector()
 
     if config_parser.api_path():
         add_api_root_to_path(config_parser.api_path())
