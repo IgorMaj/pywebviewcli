@@ -3,7 +3,9 @@ PROGRAM_DESCRIPTION = """This cli tool aims to provide a smooth development expe
 and frontend framework/setup of your choice. You can use the options below to pass arguments, an env path 
 or in-memory environment variables which correspond to the arguments:
 """
-PROGRAM_EPILOG = """Any feedback is welcome. This tool is still under development."""
+PROGRAM_EPILOG = (
+    """Any feedback is welcome. This tool is still under early development."""
+)
 
 TITLE_ARG_HELP = """Sets the webview window title, equivalent env variable is TITLE. Default: "App". """
 URL_ARG_HELP = """Sets the webview window url, equivalent env variable is URL. Default: "http://localhost". """
