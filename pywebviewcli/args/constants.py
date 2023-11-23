@@ -17,3 +17,4 @@ ENV_PATH_ARG_HELP = (
 WAIT_TIMEOUT_ARG_HELP = """The cli will wait for up x seconds for server to become available before starting the webview.
 If the server starts up before the timeout, the webview will appear.
 Set to 0 to disable. Default: 10 secs."""
+PROGRAM_VERSION = "0.0.2"

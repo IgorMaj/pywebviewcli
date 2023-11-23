@@ -1,12 +1,12 @@
 import argparse
 import os
 from types import NoneType
-
 from dotenv import load_dotenv
 
 from .constants import (
     API_PATH_ARG_HELP,
     ENV_PATH_ARG_HELP,
+    PROGRAM_VERSION,
     WAIT_TIMEOUT_ARG_HELP,
     PROGRAM_DESCRIPTION,
     PROGRAM_EPILOG,
@@ -32,6 +32,12 @@ class ConfigParser:
         self.parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
         self.parser.add_argument("-wt", "--wait-timeout", help=WAIT_TIMEOUT_ARG_HELP)
         self.parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
+        self.parser.add_argument(
+            "-v",
+            "--version",
+            action="version",
+            version=PROGRAM_VERSION,
+        )
         self._args = None
 
     def parse_args(self) -> None:
