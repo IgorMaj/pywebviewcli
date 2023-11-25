@@ -1,3 +1,4 @@
+import debugpy
 import webview
 
 # Path Start (Necessary so it works as a wheel)
@@ -27,6 +28,9 @@ def main():
 
     if config_parser.api_path():
         add_api_root_to_path(config_parser.api_path())
+
+    if config_parser.debug_port():
+        debugpy.listen(config_parser.debug_port())
 
     if config_parser.wait_timeout():
         wait_for_server_startup(config_parser.url(), config_parser.wait_timeout())
