@@ -1,5 +1,6 @@
 import urllib.parse
 
+
 HTTP_PORT = 80
 HTTPS_PORT = 443
 
@@ -16,3 +17,11 @@ def parse_hostname_and_port(url: str):
         port = HTTPS_PORT
 
     return parsed_obj.hostname, port
+
+
+def is_http_url(url):
+    try:
+        result = urllib.parse.urlparse(url)
+        return all([result.scheme, result.netloc, "http" in result.scheme])
+    except ValueError:
+        return False

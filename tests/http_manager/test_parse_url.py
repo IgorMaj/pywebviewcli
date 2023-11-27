@@ -1,4 +1,4 @@
-from pywebviewcli.http_manager.parse_url import parse_hostname_and_port
+from pywebviewcli.http_manager.parse_url import is_http_url, parse_hostname_and_port
 
 
 def test_parse_hostname_and_port():
@@ -17,3 +17,10 @@ def test_parse_hostname_and_port():
     hostname, port = parse_hostname_and_port("https://google.com:8005/dwwwwdwqddw")
     assert hostname == "google.com"
     assert port == 8005
+
+
+def test_is_http_url():
+    assert is_http_url("http://localhost:5000") is True
+    assert is_http_url("httplocalhost:5000") is False
+    assert is_http_url("https://example.com") is True
+    assert is_http_url("localhost.com") is False
