@@ -1,5 +1,5 @@
 import os
-from src.args.parser import ConfigParser
+from src.pywebviewcli.args.parser import ConfigParser
 
 
 class NoneArgs:
