@@ -1,5 +1,5 @@
 import webview
-from pywebviewcli.js.methods import add_reload_listener, reload_window
+from src.js.methods import add_reload_listener, reload_window
 
 
 def test_reload_window():

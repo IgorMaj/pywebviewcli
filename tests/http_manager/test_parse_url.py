@@ -1,4 +1,4 @@
-from pywebviewcli.http_manager.parse_url import is_http_url, parse_hostname_and_port
+from src.http_manager.parse_url import is_http_url, parse_hostname_and_port
 
 
 def test_parse_hostname_and_port():

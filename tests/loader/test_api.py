@@ -2,7 +2,7 @@ import sys
 import threading
 import time
 
-from pywebviewcli.loader.api import (
+from src.loader.api import (
     get_methods,
     is_current_thread,
     is_main_thread,
