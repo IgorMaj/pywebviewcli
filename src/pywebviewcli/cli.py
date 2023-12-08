@@ -1,3 +1,10 @@
+# Path Start (Necessary so it works as a wheel)
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+# Path End
+
 from args.parser import config_parser
 from commands.build import build_command
 from commands.dev import dev_command
