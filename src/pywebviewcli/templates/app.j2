@@ -1,5 +1,11 @@
 import webview
 {% if api_name is defined %}
+# Prerequisite to be able to import files from api
+import sys
+from pathlib import Path
+root_path = str(Path(__file__).parent.absolute())
+sys.path.append(f"{root_path}/api")
+
 import inspect
 import api.{{ api_name }}
 
