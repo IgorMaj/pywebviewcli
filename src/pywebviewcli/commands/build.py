@@ -7,6 +7,12 @@ import shutil
 from args.parser import ConfigParser
 
 
+def get_absolute_path(path: str | None):
+    if not path:
+        return path
+    return str(Path(path).absolute())
+
+
 def get_parent_path(path: str):
     return str(Path(path).parent.absolute())
 
@@ -55,10 +61,13 @@ def package_app(temp_dir):
 
 
 def build_command(config_parser: ConfigParser):
+    absolute_input_path = get_absolute_path(config_parser.input_dir())
+    absolute_output_path = get_absolute_path(config_parser.out_dir())
+
     content = generate_app_template(config_parser.api_path())
     temp_dir = create_app(content)
 
-    copy_dir(config_parser.input_dir(), f"{temp_dir}/static")
+    copy_dir(absolute_input_path, f"{temp_dir}/static")
 
     if config_parser.api_path():
         api_dir = get_parent_path(config_parser.api_path())
@@ -66,6 +75,6 @@ def build_command(config_parser: ConfigParser):
 
     package_app(temp_dir)
 
-    remove_dir(config_parser.out_dir())
-    move_dir(f"{temp_dir}/dist/app", config_parser.out_dir())
+    remove_dir(absolute_output_path)
+    move_dir(f"{temp_dir}/dist/app", absolute_output_path)
     remove_dir(temp_dir)
