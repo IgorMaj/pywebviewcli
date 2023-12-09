@@ -12,7 +12,7 @@ def get_methods(module):
     return methods
 {% endif %}
 
-url = "./static/index.html"
+url = "./{{ static_dirname }}/index.html"
 title = "App"
 window = webview.create_window(title=title, url=url, maximized=True)
 {% if api_name is defined %}
