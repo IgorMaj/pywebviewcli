@@ -31,17 +31,21 @@ def generate_app_template(api_path: str = None):
     return template.render(template_vars)
 
 
-def create_app(app_template_content):
+def create_temp_dir():
     temp_dir = tempfile.mkdtemp()
-    file_path = os.path.join(temp_dir, "app.py")
-    with open(file_path, "w") as file:
-        file.write(app_template_content)
-
     return temp_dir
 
 
 def copy_dir(source_path, destination_path):
-    shutil.copytree(source_path, destination_path)
+    shutil.copytree(source_path, destination_path, dirs_exist_ok=True)
+
+
+def write_file_to_directory(file_path: str, content: str):
+    try:
+        with open(file_path, "w") as file:
+            file.write(content)
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def move_dir(source_path, destination_path):
@@ -64,14 +68,16 @@ def build_command(config_parser: ConfigParser):
     absolute_input_path = get_absolute_path(config_parser.input_dir())
     absolute_output_path = get_absolute_path(config_parser.out_dir())
 
-    content = generate_app_template(config_parser.api_path())
-    temp_dir = create_app(content)
+    temp_dir = create_temp_dir()
 
     copy_dir(absolute_input_path, f"{temp_dir}/static")
 
     if config_parser.api_path():
         api_dir = get_parent_path(config_parser.api_path())
-        copy_dir(api_dir, f"{temp_dir}/api")
+        copy_dir(api_dir, temp_dir)
+
+    content = generate_app_template(config_parser.api_path())
+    write_file_to_directory(f"{temp_dir}/app.py", content)
 
     package_app(temp_dir)
 

@@ -1,13 +1,7 @@
 import webview
 {% if api_name is defined %}
-# Prerequisite to be able to import files from api
-import sys
-from pathlib import Path
-root_path = str(Path(__file__).parent.absolute())
-sys.path.append(f"{root_path}/api")
-
 import inspect
-import api.{{ api_name }}
+import {{ api_name }}
 
 def get_methods(module):
     methods = [
@@ -22,6 +16,6 @@ url = "./static/index.html"
 title = "App"
 window = webview.create_window(title=title, url=url, maximized=True)
 {% if api_name is defined %}
-window.expose(*get_methods(api.{{ api_name }}))
+window.expose(*get_methods({{ api_name }}))
 {% endif %}
 webview.start(private_mode=False)
