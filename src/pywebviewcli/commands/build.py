@@ -31,7 +31,9 @@ def get_parent_path(path: str):
     return str(Path(path).parent.absolute())
 
 
-def generate_app_template(api_path: str = None, static_dirname="static"):
+def generate_app_template(
+    api_path: str = None, static_dirname="static", app_title="App"
+):
     dir_path = get_parent_path(get_parent_path(__file__))
     env = Environment(loader=FileSystemLoader(dir_path))
     template = env.get_template(f"./templates/app.j2")
@@ -43,6 +45,7 @@ def generate_app_template(api_path: str = None, static_dirname="static"):
         template_vars["api_name"] = api_name
 
     template_vars["static_dirname"] = static_dirname
+    template_vars["app_title"] = app_title
 
     return template.render(template_vars)
 
@@ -99,7 +102,9 @@ def build_command(config_parser: ConfigParser):
         api_dir = get_parent_path(config_parser.api_path())
         copy_dir(api_dir, temp_dir)
 
-    content = generate_app_template(config_parser.api_path(), unique_static_dirname)
+    content = generate_app_template(
+        config_parser.api_path(), unique_static_dirname, config_parser.title()
+    )
     write_file_to_directory(f"{temp_dir}/{unique_app_filename}", content)
 
     package_app(temp_dir, unique_app_filename, unique_static_dirname)
