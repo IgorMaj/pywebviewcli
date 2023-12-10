@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 from types import NoneType
 from dotenv import load_dotenv
 
@@ -7,6 +8,8 @@ from .constants import (
     API_PATH_ARG_HELP,
     DEBUG_PORT_ARG_HELP,
     ENV_PATH_ARG_HELP,
+    INPUT_DIR_ARG_HELP,
+    OUTPUT_DIR_ARG_HELP,
     PROGRAM_VERSION,
     WAIT_TIMEOUT_ARG_HELP,
     PROGRAM_DESCRIPTION,
@@ -19,6 +22,7 @@ from .constants import (
 DEFAULT_URL = "http://localhost"
 DEFAULT_TITLE = "App"
 DEFAULT_WAIT_TIMEOUT = 10  # secs
+DEFAULT_OUT_DIR = "./dist"
 
 
 class ConfigParser:
@@ -43,8 +47,8 @@ class ConfigParser:
         build_parser = subparsers.add_parser("build")
         build_parser.add_argument("-t", "--title", help=TITLE_ARG_HELP)
         build_parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
-        build_parser.add_argument("-ip", "--input-dir", help="Placeholder")
-        build_parser.add_argument("-op", "--out-dir", help="Placeholder")
+        build_parser.add_argument("-ip", "--input-dir", help=INPUT_DIR_ARG_HELP)
+        build_parser.add_argument("-op", "--out-dir", help=OUTPUT_DIR_ARG_HELP)
         build_parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
 
         self.parser.add_argument(
@@ -57,8 +61,12 @@ class ConfigParser:
 
     def parse_args(self) -> None:
         self._args = self.parser.parse_args()
-        if self._args.env_path:
-            self._load_env()
+        try:
+            if self._args.env_path:
+                self._load_env()
+        except AttributeError:
+            self.parser.print_help()
+            sys.exit(0)
 
     def _load_env(self):
         load_dotenv(self._args.env_path)
@@ -87,8 +95,8 @@ class ConfigParser:
     def input_dir(self) -> str | NoneType:
         return self._args.input_dir or os.getenv("INPUT_DIR") or None
 
-    def out_dir(self) -> str | NoneType:
-        return self._args.out_dir or os.getenv("OUT_DIR") or None
+    def out_dir(self) -> str:
+        return self._args.out_dir or os.getenv("OUT_DIR") or DEFAULT_OUT_DIR
 
 
 config_parser = ConfigParser()
