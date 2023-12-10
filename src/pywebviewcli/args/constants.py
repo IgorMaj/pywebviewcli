@@ -16,10 +16,10 @@ WAIT_TIMEOUT_ARG_HELP = """The cli will wait for up x seconds for the frontend s
 If the server starts up before the timeout, the webview will appear.
 Set to 0 to disable. Default: 10 secs."""
 DEBUG_PORT_ARG_HELP = """Start a Debug Adapter Protocol server on the specified port. Equivalent env variable is DEBUG_PORT. Default: None (no debug server will start up)"""
-INPUT_DIR_ARG_HELP = """Path to static directory containing index.html and optionally all html css and js files. Equivalent env variable is INPUT_DIR. Default: None"""
+INPUT_DIR_ARG_HELP = """Path to static directory containing index.html and optionally all html css and js files. Equivalent env variable is INPUT_DIR. Required either via env variable/file or command-line argument. Default: None"""
 OUTPUT_DIR_ARG_HELP = """Path to destination directory for compiled (packaged) application. Equivalent env variable is OUT_DIR. Default: ./dist"""
 
-INPUT_PATH_REQUIRED = "Input dir path is required, please specify it either via command line argument or environemnt variables/file. run ;pywebviewcli build --help' for more details."
+INPUT_PATH_REQUIRED = "Input dir path is required, please specify it either via command line argument or environemnt variables/file. run 'pywebviewcli build --help' for more details."
 
 
 PROGRAM_VERSION = "0.0.4"
