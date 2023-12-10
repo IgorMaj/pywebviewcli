@@ -3,12 +3,12 @@ import os
 import sys
 from types import NoneType
 from dotenv import load_dotenv
-
 from .constants import (
     API_PATH_ARG_HELP,
     DEBUG_PORT_ARG_HELP,
     ENV_PATH_ARG_HELP,
     INPUT_DIR_ARG_HELP,
+    INPUT_PATH_REQUIRED,
     OUTPUT_DIR_ARG_HELP,
     PROGRAM_VERSION,
     WAIT_TIMEOUT_ARG_HELP,
@@ -93,7 +93,11 @@ class ConfigParser:
         return int(ret_val) if ret_val is not None else None
 
     def input_dir(self) -> str | NoneType:
-        return self._args.input_dir or os.getenv("INPUT_DIR") or None
+        return (
+            self._args.input_dir
+            or os.getenv("INPUT_DIR")
+            or sys.exit(print(INPUT_PATH_REQUIRED))
+        )
 
     def out_dir(self) -> str:
         return self._args.out_dir or os.getenv("OUT_DIR") or DEFAULT_OUT_DIR
