@@ -1,34 +1,19 @@
 from pathlib import Path
-import uuid
 from jinja2 import Environment, FileSystemLoader
-import tempfile
 import os
-import shutil
 
 from args.parser import ConfigParser
-import uuid
-
-
-def generate_id() -> str:
-    return str(uuid.uuid4()).replace("-", "")
-
-
-def generate_unique_app_name():
-    return f"app_{generate_id()}.py"
-
-
-def generate_unique_static_name():
-    return f"static_{generate_id()}"
-
-
-def get_absolute_path(path: str | None):
-    if not path:
-        return path
-    return str(Path(path).absolute())
-
-
-def get_parent_path(path: str):
-    return str(Path(path).parent.absolute())
+from file_manager.methods import (
+    copy_dir,
+    create_temp_dir,
+    generate_unique_app_name,
+    generate_unique_static_name,
+    get_absolute_path,
+    get_parent_path,
+    move_dir,
+    remove_dir,
+    write_file_to_directory,
+)
 
 
 def generate_app_template(
@@ -48,34 +33,6 @@ def generate_app_template(
     template_vars["app_title"] = app_title
 
     return template.render(template_vars)
-
-
-def create_temp_dir():
-    temp_dir = tempfile.mkdtemp()
-    return temp_dir
-
-
-def copy_dir(source_path, destination_path):
-    shutil.copytree(source_path, destination_path, dirs_exist_ok=True)
-
-
-def write_file_to_directory(file_path: str, content: str):
-    try:
-        with open(file_path, "w") as file:
-            file.write(content)
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-
-def move_dir(source_path, destination_path):
-    shutil.move(source_path, destination_path)
-
-
-def remove_dir(temp_dir):
-    try:
-        shutil.rmtree(temp_dir)
-    except Exception as error:
-        print(error)
 
 
 def package_app(
