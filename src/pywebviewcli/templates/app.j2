@@ -1,0 +1,21 @@
+import webview
+{% if api_name is defined %}
+import inspect
+import {{ api_name }}
+
+def get_methods(module):
+    methods = [
+        getattr(module, func)
+        for func in dir(module)
+        if callable(getattr(module, func)) and inspect.isfunction(getattr(module, func))
+    ]
+    return methods
+{% endif %}
+
+url = "./{{ static_dirname }}/index.html"
+title =  "{{ app_title }}"
+window = webview.create_window(title=title, url=url, maximized=True)
+{% if api_name is defined %}
+window.expose(*get_methods({{ api_name }}))
+{% endif %}
+webview.start(private_mode=False)

@@ -1,12 +1,15 @@
 import argparse
 import os
+import sys
 from types import NoneType
 from dotenv import load_dotenv
-
 from .constants import (
     API_PATH_ARG_HELP,
     DEBUG_PORT_ARG_HELP,
     ENV_PATH_ARG_HELP,
+    INPUT_DIR_ARG_HELP,
+    INPUT_PATH_REQUIRED,
+    OUTPUT_DIR_ARG_HELP,
     PROGRAM_VERSION,
     WAIT_TIMEOUT_ARG_HELP,
     PROGRAM_DESCRIPTION,
@@ -19,6 +22,7 @@ from .constants import (
 DEFAULT_URL = "http://localhost"
 DEFAULT_TITLE = "App"
 DEFAULT_WAIT_TIMEOUT = 10  # secs
+DEFAULT_OUT_DIR = "./dist"
 
 
 class ConfigParser:
@@ -28,12 +32,25 @@ class ConfigParser:
             description=PROGRAM_DESCRIPTION,
             epilog=PROGRAM_EPILOG,
         )
-        self.parser.add_argument("-t", "--title", help=TITLE_ARG_HELP)
-        self.parser.add_argument("-u", "--url", help=URL_ARG_HELP)
-        self.parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
-        self.parser.add_argument("-wt", "--wait-timeout", help=WAIT_TIMEOUT_ARG_HELP)
-        self.parser.add_argument("-dp", "--debug-port", help=DEBUG_PORT_ARG_HELP)
-        self.parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
+        subparsers = self.parser.add_subparsers(
+            title="Subcommands", dest="subcommand", help="Subcommand help"
+        )
+        dev_parser = subparsers.add_parser("dev")
+
+        dev_parser.add_argument("-t", "--title", help=TITLE_ARG_HELP)
+        dev_parser.add_argument("-u", "--url", help=URL_ARG_HELP)
+        dev_parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
+        dev_parser.add_argument("-wt", "--wait-timeout", help=WAIT_TIMEOUT_ARG_HELP)
+        dev_parser.add_argument("-dp", "--debug-port", help=DEBUG_PORT_ARG_HELP)
+        dev_parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
+
+        build_parser = subparsers.add_parser("build")
+        build_parser.add_argument("-t", "--title", help=TITLE_ARG_HELP)
+        build_parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
+        build_parser.add_argument("-ip", "--input-dir", help=INPUT_DIR_ARG_HELP)
+        build_parser.add_argument("-op", "--out-dir", help=OUTPUT_DIR_ARG_HELP)
+        build_parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
+
         self.parser.add_argument(
             "-v",
             "--version",
@@ -44,11 +61,18 @@ class ConfigParser:
 
     def parse_args(self) -> None:
         self._args = self.parser.parse_args()
-        if self._args.env_path:
-            self._load_env()
+        try:
+            if self._args.env_path:
+                self._load_env()
+        except AttributeError:
+            self.parser.print_help()
+            sys.exit(0)
 
     def _load_env(self):
         load_dotenv(self._args.env_path)
+
+    def command(self):
+        return self._args.subcommand
 
     def title(self) -> str:
         return self._args.title or os.getenv("TITLE") or DEFAULT_TITLE
@@ -67,6 +91,16 @@ class ConfigParser:
     def debug_port(self) -> int | None:
         ret_val = self._args.debug_port or os.getenv("DEBUG_PORT") or None
         return int(ret_val) if ret_val is not None else None
+
+    def input_dir(self) -> str | NoneType:
+        return (
+            self._args.input_dir
+            or os.getenv("INPUT_DIR")
+            or sys.exit(print(INPUT_PATH_REQUIRED))
+        )
+
+    def out_dir(self) -> str:
+        return self._args.out_dir or os.getenv("OUT_DIR") or DEFAULT_OUT_DIR
 
 
 config_parser = ConfigParser()
