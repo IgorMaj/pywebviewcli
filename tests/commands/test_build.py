@@ -1,8 +1,11 @@
 import sys
-import pathlib
+from pathlib import Path
 
 # to be able to see args and other modules which build_module relies on
-sys.path.insert(0, str(pathlib.Path("../src/pywebviewcli").absolute()))
+sys.path.insert(
+    0,
+    str(Path(f"{Path(__file__).parent}/../../src/pywebviewcli").absolute()),
+)
 import src.pywebviewcli.commands.build as build_module
 
 
