@@ -15,6 +15,6 @@ You can run the following commands to see how the tool works:
 
 `pywebviewcli build --help`
 
-Feedback
+## Feedback
 We welcome any feedback on PyWebViewCLI. As the tool is currently in early development, your insights and suggestions will be invaluable in improving its functionality and user experience. Feel free to report issues or contribute to the development of this tool on our GitHub repository.
 Thank you for using PyWebViewCLI!
