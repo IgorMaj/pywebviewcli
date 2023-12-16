@@ -5,7 +5,7 @@ PyWebViewCLI is a command-line interface (CLI) tool designed to enhance the deve
 ## Installation
 Before using PyWebViewCLI, ensure you have Python installed on your system. You can install PyWebViewCLI using pip:
 
-`pip install pywebviewcli`
+`pip install git+ssh://git@github.com/IgorMaj/pywebviewcli.git`
 
 You can run the following commands to see how the tool works:
 
