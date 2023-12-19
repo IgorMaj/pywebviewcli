@@ -50,5 +50,8 @@ def move_dir(source_path, destination_path):
 def remove_dir(temp_dir):
     try:
         shutil.rmtree(temp_dir)
+    except FileNotFoundError:
+        # Ignore file already being removed
+        pass
     except Exception as error:
         print(f"Warning, failed to remove {temp_dir}: {error}")
