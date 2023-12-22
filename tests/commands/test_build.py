@@ -11,7 +11,7 @@ import src.pywebviewcli.commands.build as build_module
 
 
 @mock.patch("os.chdir")
-@mock.patch("os.system")
+@mock.patch("subprocess.Popen.wait")
 def test_package_app(mock_system, mock_chdir):
     build_module.package_app("/tmp/test1")
     mock_chdir.assert_called_with("/tmp/test1")

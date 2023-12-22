@@ -1,4 +1,5 @@
 from pathlib import Path
+from subprocess import Popen
 from jinja2 import Environment, FileSystemLoader
 import os
 
@@ -41,9 +42,10 @@ def package_app(
     unique_static_dirname: str = "static",
 ):
     os.chdir(temp_dir)
-    os.system(
-        f"pyinstaller --add-data {unique_static_dirname}:{unique_static_dirname} {unique_app_filename} --name app"
-    )
+    Popen(
+        f"pyinstaller --add-data {unique_static_dirname}:{unique_static_dirname} {unique_app_filename} --name app",
+        shell=True,
+    ).wait()
 
 
 def build_command(config_parser: ConfigParser):
@@ -52,20 +54,23 @@ def build_command(config_parser: ConfigParser):
     unique_app_filename = generate_unique_app_name()
     unique_static_dirname = generate_unique_static_name()
     temp_dir = create_temp_dir()
+    try:
+        copy_dir(absolute_input_path, f"{temp_dir}/{unique_static_dirname}")
 
-    copy_dir(absolute_input_path, f"{temp_dir}/{unique_static_dirname}")
+        if config_parser.api_path():
+            api_dir = get_parent_path(config_parser.api_path())
+            copy_dir(api_dir, temp_dir)
 
-    if config_parser.api_path():
-        api_dir = get_parent_path(config_parser.api_path())
-        copy_dir(api_dir, temp_dir)
+        content = generate_app_template(
+            config_parser.api_path(), unique_static_dirname, config_parser.title()
+        )
+        write_file_to_directory(f"{temp_dir}/{unique_app_filename}", content)
 
-    content = generate_app_template(
-        config_parser.api_path(), unique_static_dirname, config_parser.title()
-    )
-    write_file_to_directory(f"{temp_dir}/{unique_app_filename}", content)
+        package_app(temp_dir, unique_app_filename, unique_static_dirname)
 
-    package_app(temp_dir, unique_app_filename, unique_static_dirname)
-
-    remove_dir(absolute_output_path)
-    move_dir(f"{temp_dir}/dist/app", absolute_output_path)
-    remove_dir(temp_dir)
+        remove_dir(absolute_output_path)
+        move_dir(f"{temp_dir}/dist/app", absolute_output_path)
+        remove_dir(temp_dir)
+    except Exception as e:
+        remove_dir(temp_dir)
+        raise e
