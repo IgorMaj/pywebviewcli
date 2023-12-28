@@ -1,4 +1,5 @@
 import os
+from unittest import mock
 from src.pywebviewcli.args.parser import ConfigParser
 
 
@@ -9,6 +10,9 @@ class NoneArgs:
         self.api_path = None
         self.wait_timeout = None
         self.debug_port = None
+        # build args
+        self.input_dir = None
+        self.out_dir = None
 
 
 # priority 1, passed args
@@ -20,6 +24,9 @@ def test_args():
             self.api_path = "testpath"
             self.wait_timeout = 5
             self.debug_port = 5678
+            # build args
+            self.input_dir = "./input"
+            self.out_dir = "./output"
 
     parser = ConfigParser()
     mocked_args = MockedArgs()
@@ -30,6 +37,8 @@ def test_args():
     assert parser.api_path() == mocked_args.api_path
     assert parser.wait_timeout() == mocked_args.wait_timeout
     assert parser.debug_port() == mocked_args.debug_port
+    assert parser.input_dir() == mocked_args.input_dir
+    assert parser.out_dir() == mocked_args.out_dir
 
 
 # priority 2, env variables if none passed
@@ -39,6 +48,8 @@ def test_envs():
     os.environ["API_PATH"] = "testpath"
     os.environ["WAIT_TIMEOUT"] = "5"
     os.environ["DEBUG_PORT"] = "5678"
+    os.environ["INPUT_DIR"] = "./input"
+    os.environ["OUT_DIR"] = "./output"
 
     parser = ConfigParser()
     parser._args = NoneArgs()
@@ -48,16 +59,21 @@ def test_envs():
     assert parser.api_path() == os.environ["API_PATH"]
     assert parser.wait_timeout() == int(os.environ["WAIT_TIMEOUT"])
     assert parser.debug_port() == int(os.environ["DEBUG_PORT"])
+    assert parser.input_dir() == os.environ["INPUT_DIR"]
+    assert parser.out_dir() == os.environ["OUT_DIR"]
 
     del os.environ["TITLE"]
     del os.environ["URL"]
     del os.environ["API_PATH"]
     del os.environ["WAIT_TIMEOUT"]
     del os.environ["DEBUG_PORT"]
+    del os.environ["INPUT_DIR"]
+    del os.environ["OUT_DIR"]
 
 
 # priority 3, if no args or variables are provided, fall back to defaults
-def test_defaults():
+@mock.patch("sys.exit")
+def test_defaults(mock_sys_exit):
     parser = ConfigParser()
     parser._args = NoneArgs()
 
@@ -66,3 +82,8 @@ def test_defaults():
     assert parser.api_path() == None
     assert parser.wait_timeout() == 10
     assert parser.debug_port() == None
+
+    parser.input_dir()
+    mock_sys_exit.assert_called()
+
+    assert parser.out_dir() == "./dist"
