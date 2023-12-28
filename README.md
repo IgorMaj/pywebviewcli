@@ -1,6 +1,6 @@
 # PyWebViewCLI
 ## Overview
-[pywebview](https://github.com/r0x0r/pywebview) is a lightweight cross-platform wrapper around a webview component that enables the user to  to display HTML content in its own native GUI window. It's fully featured, allowing for full integration between _Python_ and _JS_ technologies. However, while using it, I found the development workflow a bit slow (no automatic Python code reload, Python debug support or easy builtin way to build everything). That's how the idea for this tool was born.
+[pywebview](https://github.com/r0x0r/pywebview) is a lightweight cross-platform wrapper around a webview component that enables the user to display HTML content in its own native GUI window. It's fully featured, allowing for full integration between _Python_ and _JS_ technologies. However, while using it, I found the development workflow a bit slow (no automatic Python code reload, Python debug support or easy builtin way to build everything). That's how the idea for this tool was born.
 
 _PyWebViewCLI_ is a command-line interface (CLI) tool designed to enhance the development experience with pywebview and various frontend frameworks/setups. It facilitates a seamless workflow by supporting both command line arguments and environment variables. The tool currently offers two main subcommands: _dev_ and _build_. Each subcommand has its own set of options and functionalities to streamline the development and build processes.
 
