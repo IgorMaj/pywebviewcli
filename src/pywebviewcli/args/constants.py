@@ -14,8 +14,9 @@ TITLE_ARG_HELP = (
 )
 URL_ARG_HELP = "Sets the webview window URL. Equivalent env variable: URL. Default: 'http://localhost'."
 API_PATH_ARG_HELP = """\
-Path to the main Python file. The file's parent directory is considered the source root. 
-The file can use library, absolute, and relative imports. Equivalent env variable: API_PATH. Default: None.
+Path to the main Python file. The file's parent directory is considered the source root.
+Functions present in the file will be callable from the 'pywebview.api' object. The file can use library, absolute, and relative imports. 
+Equivalent env variable: API_PATH. Default: None.
 """
 ENV_PATH_ARG_HELP = "Specify the path to an .env file containing argument environment variables. Optional."
 WAIT_TIMEOUT_ARG_HELP = """\
