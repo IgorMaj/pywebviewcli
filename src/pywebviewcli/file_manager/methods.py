@@ -1,7 +1,9 @@
+import os
 from pathlib import Path
 import shutil
 import tempfile
 import uuid
+import json
 
 
 def generate_id() -> str:
@@ -35,8 +37,9 @@ def copy_dir(source_path, destination_path):
     shutil.copytree(source_path, destination_path, dirs_exist_ok=True)
 
 
-def write_file_to_directory(file_path: str, content: str):
+def write_file(file_path: str, content: str):
     try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "w") as file:
             file.write(content)
     except Exception as e:
@@ -55,3 +58,18 @@ def remove_dir(temp_dir):
         pass
     except Exception as error:
         print(f"Warning, failed to remove {temp_dir}: {error}")
+
+
+def read_json_file(path: str) -> dict:
+    with open(path, "r") as json_file:
+        return json.load(json_file)
+
+
+def write_json_file(path: str, content: dict):
+    with open(path, "w") as json_file:
+        json.dump(content, json_file, indent=4)
+
+
+# backups file to the same dir, just adds .bak extension
+def backup_file(path: str):
+    shutil.copyfile(path, f"{path}.bak")

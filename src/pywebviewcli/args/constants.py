@@ -33,4 +33,4 @@ OUTPUT_DIR_ARG_HELP = "Path to the destination directory for the compiled (packa
 
 INPUT_PATH_REQUIRED = "Input dir path is required. Please specify it via the command-line argument or environment variables/file. Run 'pywebviewcli build --help' for more details."
 
-PROGRAM_VERSION = "0.0.5"
+PROGRAM_VERSION = "0.0.6"

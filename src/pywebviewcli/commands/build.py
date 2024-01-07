@@ -13,7 +13,7 @@ from file_manager.methods import (
     get_parent_path,
     move_dir,
     remove_dir,
-    write_file_to_directory,
+    write_file,
 )
 
 
@@ -64,7 +64,7 @@ def build_command(config_parser: ConfigParser):
         content = generate_app_template(
             config_parser.api_path(), unique_static_dirname, config_parser.title()
         )
-        write_file_to_directory(f"{temp_dir}/{unique_app_filename}", content)
+        write_file(f"{temp_dir}/{unique_app_filename}", content)
 
         package_app(temp_dir, unique_app_filename, unique_static_dirname)
 

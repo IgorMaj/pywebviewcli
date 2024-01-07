@@ -9,7 +9,7 @@ from src.pywebviewcli.file_manager.methods import (
     get_absolute_path,
     get_parent_path,
     remove_dir,
-    write_file_to_directory,
+    write_file,
 )
 
 
@@ -42,15 +42,15 @@ def test_create_temp_dir():
     assert not pathlib.Path(temp_path).exists()
 
 
-def test_write_file_to_directory():
+def test_write_file():
     temp_path = create_temp_dir()
-    test_file_path = f"{temp_path}/test.txt"
+    test_file_path = f"{temp_path}/foo/bar/test.txt"
     content = "test"
-    write_file_to_directory(test_file_path, content)
+    write_file(test_file_path, content)
     with open(test_file_path, "r") as file:
         assert content == file.read()
 
-    os.remove(test_file_path)
+    shutil.rmtree(temp_path)
 
 
 def test_remove_dir():

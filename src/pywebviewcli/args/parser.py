@@ -23,6 +23,7 @@ DEFAULT_URL = "http://localhost"
 DEFAULT_TITLE = "App"
 DEFAULT_WAIT_TIMEOUT = 10  # secs
 DEFAULT_OUT_DIR = "./dist"
+DEFAULT_PACKAGE_JSON_PATH = "./package.json"
 
 
 class ConfigParser:
@@ -50,6 +51,12 @@ class ConfigParser:
         build_parser.add_argument("-ip", "--input-dir", help=INPUT_DIR_ARG_HELP)
         build_parser.add_argument("-op", "--out-dir", help=OUTPUT_DIR_ARG_HELP)
         build_parser.add_argument("-ap", "--api-path", help=API_PATH_ARG_HELP)
+
+        init_parser = subparsers.add_parser("init")
+        init_parser.add_argument(
+            "-pjp", "--package-json-path", help="package.json path placeholder"
+        )
+        init_parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
 
         self.parser.add_argument(
             "-v",
@@ -101,6 +108,13 @@ class ConfigParser:
 
     def out_dir(self) -> str:
         return self._args.out_dir or os.getenv("OUT_DIR") or DEFAULT_OUT_DIR
+
+    def package_json_path(self) -> str:
+        return (
+            self._args.package_json_path
+            or os.getenv("PACKAGE_JSON_PATH")
+            or DEFAULT_PACKAGE_JSON_PATH
+        )
 
 
 config_parser = ConfigParser()
