@@ -39,17 +39,17 @@ def edit_package_json_content(content: dict):
     if start_key in content[scr_key]:
         content[scr_key][
             start_key
-        ] = f"concurrently 'pywebviewcli dev -ep ./cli.env' '{content[scr_key][start_key]}'"
+        ] = f"concurrently --kill-others 'pywebviewcli dev -ep ./cli.env' '{content[scr_key][start_key]}'"
 
     if dev_key in content[scr_key]:
         content[scr_key][
             dev_key
-        ] = f"concurrently 'pywebviewcli dev -ep ./cli.env' '{content[scr_key][dev_key]}'"
+        ] = f"concurrently --kill-others 'pywebviewcli dev -ep ./cli.env' '{content[scr_key][dev_key]}'"
 
     if build_key in content[scr_key]:
         content[scr_key][
             build_key
-        ] = f"concurrently '{content[scr_key][build_key]}' 'pywebviewcli build -ep ./cli.env'"
+        ] = f"{content[scr_key][build_key]} && pywebviewcli build -ep ./cli.env"
 
     return content
 
