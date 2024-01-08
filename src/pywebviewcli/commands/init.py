@@ -2,8 +2,6 @@
 import sys
 import os
 
-from jinja2 import Environment, FileSystemLoader
-
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 # Path End
 from args.parser import ConfigParser
@@ -15,6 +13,7 @@ from file_manager.methods import (
     write_json_file,
 )
 from http_manager.npm import get_latest_concurrently_version
+from templates.generate import generate_api_template, generate_cli_env_template
 
 
 def edit_package_json_content(content: dict):
@@ -53,22 +52,6 @@ def edit_package_json_content(content: dict):
         ] = f"concurrently '{content[scr_key][build_key]}' 'pywebviewcli build -ep ./cli.env'"
 
     return content
-
-
-# TODO: maybe these template methods and app template generation method should move into its own file
-def generate_cli_env_template(port=3000) -> str:
-    dir_path = get_parent_path(get_parent_path(__file__))
-    env = Environment(loader=FileSystemLoader(dir_path))
-    template = env.get_template(f"./templates/cli.env.j2")
-    template_vars = {"port": port}
-    return template.render(template_vars)
-
-
-def generate_api_template():
-    dir_path = get_parent_path(get_parent_path(__file__))
-    env = Environment(loader=FileSystemLoader(dir_path))
-    template = env.get_template(f"./templates/api.py.j2")
-    return template.render()
 
 
 def init_command(config_parser: ConfigParser):
