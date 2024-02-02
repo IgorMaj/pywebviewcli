@@ -1,7 +1,9 @@
 import os
 import pathlib
 import shutil
+import tempfile
 from src.pywebviewcli.file_manager.methods import (
+    backup_file,
     create_temp_dir,
     generate_id,
     generate_unique_app_name,
@@ -65,3 +67,19 @@ def test_get_absolute_path():
     abs_path = get_absolute_path(file_path)
     assert abs_path != file_path
     assert len(abs_path) > len(file_path)
+
+
+def test_backup_file():
+    # prepare file
+    fp = tempfile.NamedTemporaryFile()
+    fp.write(b"Test")
+    filename = fp.name
+    backup_file(filename)
+
+    fp.close()
+
+    # test backup
+    assert pathlib.Path(f"{filename}.bak").exists()
+
+    # cleanup
+    os.remove(f"{filename}.bak")

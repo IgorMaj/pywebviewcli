@@ -14,6 +14,7 @@ from file_manager.methods import (
 )
 from http_manager.npm import get_latest_concurrently_version
 from templates.generate import generate_api_template, generate_cli_env_template
+from framework.detect import get_framework_name
 
 
 def edit_package_json_content(content: dict):
@@ -54,15 +55,27 @@ def edit_package_json_content(content: dict):
     return content
 
 
+def get_port(frontend_framework_name):
+    if frontend_framework_name == "react":
+        return 3000
+    if frontend_framework_name == "angular":
+        return 4200
+    if frontend_framework_name == "vue":
+        return 8080
+    return 3000
+
+
 def init_command(config_parser: ConfigParser):
     package_json_path = config_parser.package_json_path()
     project_dir_path = get_parent_path(package_json_path)
     package_json_content = read_json_file(package_json_path)
     backup_file(package_json_path)
-    package_json_content = edit_package_json_content(package_json_content)
-    write_json_file(package_json_path, package_json_content)
 
-    env_file_content = generate_cli_env_template()
+    package_json_content = edit_package_json_content(package_json_content)
+    frontend_framework_name = get_framework_name(package_json_content)
+
+    write_json_file(package_json_path, package_json_content)
+    env_file_content = generate_cli_env_template(get_port(frontend_framework_name))
     write_file(f"{project_dir_path}/cli.env", env_file_content)
 
     api_file_content = generate_api_template()

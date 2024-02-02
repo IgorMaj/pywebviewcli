@@ -1,0 +1,10 @@
+{% if is_typescript %}
+interface PythonAPI {
+    hello: () => string
+}
+{% endif %}
+
+
+const getApi = (){% if is_typescript %}: PythonAPI{% endif %} => window?.pywebview?.api;
+
+export default getApi;
