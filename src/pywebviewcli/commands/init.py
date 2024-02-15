@@ -15,6 +15,7 @@ from file_manager.methods import (
 from http_manager.npm import get_latest_concurrently_version
 from templates.generate import generate_api_template, generate_cli_env_template
 from framework.detect import get_framework_name
+from framework.action import do_additional_platform_init
 
 
 def edit_package_json_content(content: dict):
@@ -80,3 +81,4 @@ def init_command(config_parser: ConfigParser):
 
     api_file_content = generate_api_template()
     write_file(f"{project_dir_path}/python/api.py", api_file_content)
+    do_additional_platform_init(frontend_framework_name, project_dir_path)

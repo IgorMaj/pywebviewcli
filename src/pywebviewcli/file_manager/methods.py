@@ -73,3 +73,7 @@ def write_json_file(path: str, content: dict):
 # backups file to the same dir, just adds .bak extension
 def backup_file(path: str):
     shutil.copyfile(path, f"{path}.bak")
+
+
+def file_exists(path: str):
+    return Path(path).exists()
