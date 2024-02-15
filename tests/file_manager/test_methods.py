@@ -5,6 +5,7 @@ import tempfile
 from src.pywebviewcli.file_manager.methods import (
     backup_file,
     create_temp_dir,
+    file_exists,
     generate_id,
     generate_unique_app_name,
     generate_unique_static_name,
@@ -83,3 +84,20 @@ def test_backup_file():
 
     # cleanup
     os.remove(f"{filename}.bak")
+
+
+def test_file_exists():
+    # Prepare file
+    fp = tempfile.NamedTemporaryFile()
+    fp.write(b"Test")
+    filename = fp.name
+
+    assert file_exists(filename)
+
+    # closing should delete it
+    fp.close()
+
+    assert not file_exists(filename)
+
+    # file which never existed at all
+    assert not file_exists(f"{filename}.garbage")

@@ -1,4 +1,3 @@
-# Additional react action
 from file_manager.methods import file_exists
 
 
@@ -15,6 +14,7 @@ def get_react_init_file_path(project_dir_path: str) -> str:
     raise Exception("TODO: No react init file")
 
 
+# TODO: jinja file
 init_template = """
 const initPyWebView = () => {
   return new Promise((resolve) => {
@@ -27,6 +27,7 @@ await initPyWebView();
 """
 
 
+# Additional react action
 def react_action(project_dir_path: str):
     react_init_file_path = get_react_init_file_path(project_dir_path)
     # Read the content of the file
@@ -38,7 +39,7 @@ def react_action(project_dir_path: str):
 
     if import_index == -1:
         # If "import" not found, just append at the end
-        content += "\n" + init_template
+        content = init_template + "\n" + content
     else:
         # Insert the text after the last import statement
         insert_index = content.find("\n", import_index) + 1
