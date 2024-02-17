@@ -1,4 +1,5 @@
 from file_manager.methods import file_exists
+from templates.generate import generate_init_template
 
 
 def get_react_init_file_path(project_dir_path: str) -> str:
@@ -14,21 +15,9 @@ def get_react_init_file_path(project_dir_path: str) -> str:
     raise Exception("TODO: No react init file")
 
 
-# TODO: jinja file
-init_template = """
-const initPyWebView = () => {
-  return new Promise((resolve) => {
-    window.addEventListener("pywebviewready", () => {
-      resolve();
-    });
-  });
-};
-await initPyWebView();
-"""
-
-
 # Additional react action
 def react_action(project_dir_path: str):
+    init_template = generate_init_template()
     react_init_file_path = get_react_init_file_path(project_dir_path)
     # Read the content of the file
     with open(react_init_file_path, "r") as file:

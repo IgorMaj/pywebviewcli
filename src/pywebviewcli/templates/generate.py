@@ -40,6 +40,7 @@ def generate_api_js_template(is_typescript=False) -> str:
     pass
 
 
-def generate_framework_template(framework_name: str):
-    # TODO specific react, angular, vue or in the future others template
-    pass
+def generate_init_template() -> str:
+    env = Environment(loader=FileSystemLoader(get_parent_path(__file__)))
+    template = env.get_template(f"./init.js.j2")
+    return template.render()

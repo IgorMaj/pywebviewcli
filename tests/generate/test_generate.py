@@ -46,3 +46,8 @@ def test_generate_cli_env_template():
 def test_generate_api_template():
     template_str = generate_module.generate_api_template()
     assert "def hello" in template_str
+
+
+def test_generate_init_template():
+    template_str = generate_module.generate_init_template()
+    assert "await initPyWebView();" in template_str
