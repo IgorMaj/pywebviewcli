@@ -1,4 +1,4 @@
-from file_manager.methods import file_exists
+from file_manager.methods import file_exists, read_env_file, write_env_file
 from templates.generate import generate_init_template
 
 
@@ -10,18 +10,7 @@ def get_react_init_file_path(project_dir_path: str) -> str:
         if file_exists(full_path):
             return full_path
 
-    raise Exception("TODO: No react init file")
-
-
-def read_env_file(file_path: str) -> list[str]:
-    with open(file_path, "r") as f:
-        lines = f.readlines()
-    return lines
-
-
-def write_env_file(file_path: str, lines: list[str]):
-    with open(file_path, "w") as f:
-        f.writelines(lines)
+    raise Exception("Error: No react init file found.")
 
 
 def patch_react_env_file():
@@ -38,6 +27,7 @@ def patch_react_env_file():
             write_env_file(env_file, file_lines)
             return
 
+    # .env file doesn't exist. Init it.
     write_env_file(".env", [f"{browser_cmd_template}\n"])
 
 

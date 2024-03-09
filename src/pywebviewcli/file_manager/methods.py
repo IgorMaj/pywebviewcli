@@ -77,3 +77,14 @@ def backup_file(path: str):
 
 def file_exists(path: str):
     return Path(path).exists()
+
+
+def read_env_file(file_path: str) -> list[str]:
+    with open(file_path, "r") as f:
+        lines = f.readlines()
+    return lines
+
+
+def write_env_file(file_path: str, lines: list[str]):
+    with open(file_path, "w") as f:
+        f.writelines(lines)

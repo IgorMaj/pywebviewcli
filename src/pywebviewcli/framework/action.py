@@ -1,12 +1,6 @@
+from angular import angular_action
+from vue import vue_action
 from react import react_action
-
-
-def angular_action(project_dir_path: str):
-    pass
-
-
-def vue_action(project_dir_path: str):
-    pass
 
 
 action_map = {"react": react_action, "angular": angular_action, "vue": vue_action}

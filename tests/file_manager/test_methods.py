@@ -11,7 +11,9 @@ from src.pywebviewcli.file_manager.methods import (
     generate_unique_static_name,
     get_absolute_path,
     get_parent_path,
+    read_env_file,
     remove_dir,
+    write_env_file,
     write_file,
 )
 
@@ -101,3 +103,33 @@ def test_file_exists():
 
     # file which never existed at all
     assert not file_exists(f"{filename}.garbage")
+
+
+def test_read_env_file():
+    with tempfile.NamedTemporaryFile(mode="w") as temp_file:
+        temp_file.writelines(["ENV1=1\n"])
+        temp_file.writelines(["ENV2=2"])
+        temp_file.flush()
+
+        lines = read_env_file(temp_file.name)
+        assert len(lines) == 2
+        assert lines[0] == "ENV1=1\n"
+        assert lines[1] == "ENV2=2"
+
+
+def test_write_env_file():
+    temp_dir = tempfile.mkdtemp()
+    # Create and fill temp file
+    temp_env_path = f"{temp_dir}/temp.env"
+    write_env_file(temp_env_path, ["ENV=1\n", "OK=2"])
+
+    # Test that file exists
+    assert pathlib.Path(temp_env_path).exists()
+    # Test file content
+    with open(temp_env_path, "r") as created_file:
+        content = created_file.read()
+        assert "ENV=1" in content
+        assert "OK=2" in content
+
+    # Cleanup
+    shutil.rmtree(temp_dir)
