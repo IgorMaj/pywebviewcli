@@ -10,6 +10,7 @@ from .constants import (
     INPUT_DIR_ARG_HELP,
     INPUT_PATH_REQUIRED,
     OUTPUT_DIR_ARG_HELP,
+    PACKAGE_JSON_PATH_HELP,
     PROGRAM_VERSION,
     WAIT_TIMEOUT_ARG_HELP,
     PROGRAM_DESCRIPTION,
@@ -54,7 +55,7 @@ class ConfigParser:
 
         init_parser = subparsers.add_parser("init")
         init_parser.add_argument(
-            "-pjp", "--package-json-path", help="package.json path placeholder"
+            "-pjp", "--package-json-path", help=PACKAGE_JSON_PATH_HELP
         )
         init_parser.add_argument("-ep", "--env-path", help=ENV_PATH_ARG_HELP)
 

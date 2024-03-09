@@ -35,11 +35,6 @@ def generate_api_template() -> str:
     return template.render()
 
 
-def generate_api_js_template(is_typescript=False) -> str:
-    # TODO generates js/ts file which allows the FE to call python api
-    pass
-
-
 def generate_init_template() -> str:
     env = Environment(loader=FileSystemLoader(get_parent_path(__file__)))
     template = env.get_template(f"./init.js.j2")

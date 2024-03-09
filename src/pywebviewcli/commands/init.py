@@ -36,7 +36,7 @@ def edit_package_json_content(content: dict):
         content[devDepKey][conc_key] = get_latest_concurrently_version()
     # Modify commands (namely start, dev and build)
     if scr_key not in content:
-        raise Exception("TODO: no scripts section text")
+        raise Exception("Error: No script section found.")
 
     if start_key in content[scr_key]:
         content[scr_key][
