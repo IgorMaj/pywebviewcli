@@ -58,5 +58,7 @@ def test_generate_api_js_template():
 
 
 def test_generate_init_template():
-    template_str = generate_module.generate_init_template()
-    assert "await initPyWebView();" in template_str
+    template_str = generate_module.generate_init_template(
+        "import this from that", "console.log('ready')"
+    )
+    assert 'window.addEventListener("pywebviewready"' in template_str

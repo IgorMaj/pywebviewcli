@@ -31,26 +31,36 @@ def patch_react_env_file():
     write_env_file(".env", [f"{browser_cmd_template}\n"])
 
 
+def parse_app_init_file(file_path: str):
+    """Returns imports and the rest as strings, used by the template"""
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+
+    import_lines = []
+    main_code_lines = []
+
+    # Iterate through the lines of the file
+    for line in lines:
+        if line.startswith("import"):
+            import_lines.append(line)
+        else:
+            # we indent, since it will end up inside the add event listener callback, for format reasons
+            main_code_lines.append(f"\t{line}")
+
+    # Join the lines into multiline strings, note: lines already contain newline separator
+    imports = "".join(import_lines)
+    main_code = "".join(main_code_lines)
+
+    return imports, main_code
+
+
 def react_action(project_dir_path: str):
-    init_template = generate_init_template()
     react_init_file_path = get_react_init_file_path(project_dir_path)
-    # Read the content of the file
-    with open(react_init_file_path, "r") as file:
-        content = file.read()
-
-    # Find the last occurrence of "import"
-    import_index = content.rfind("import")
-
-    if import_index == -1:
-        # If "import" not found, just append at the end
-        content = init_template + "\n" + content
-    else:
-        # Insert the text after the last import statement
-        insert_index = content.find("\n", import_index) + 1
-        content = content[:insert_index] + init_template + "\n" + content[insert_index:]
+    imports, main_code = parse_app_init_file(react_init_file_path)
+    init_template_content = generate_init_template(imports=imports, main_code=main_code)
 
     # Write the modified content back to the file
     with open(react_init_file_path, "w") as file:
-        file.write(content)
+        file.write(init_template_content)
 
     patch_react_env_file()

@@ -7,12 +7,9 @@ interface PythonAPI {
     hello: () => Promise<string>;
 }
 {% endif %}
-
 {% if is_typescript %}
 type GlobalObject = typeof globalThis & Window & { pywebview: { api: PythonAPI } };
 {% endif %}
-
-
 /*
 *   You can call this from anywhere in the app
 */

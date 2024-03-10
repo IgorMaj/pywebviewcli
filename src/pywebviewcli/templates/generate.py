@@ -42,7 +42,8 @@ def generate_api_js_template(is_typescript=False) -> str:
     return template.render(template_vars)
 
 
-def generate_init_template() -> str:
+def generate_init_template(imports: str, main_code: str) -> str:
     env = Environment(loader=FileSystemLoader(get_parent_path(__file__)))
+    template_vars = {"imports": imports, "main_code": main_code}
     template = env.get_template(f"./init.js.j2")
-    return template.render()
+    return template.render(template_vars)
