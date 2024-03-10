@@ -35,4 +35,4 @@ def test_get_framework_name():
 def test_is_typescript():
     assert not is_typescript(None)
     assert not is_typescript({})
-    assert is_typescript({"devDependencies": {"typescript": "*"}})
+    assert is_typescript({"dependencies": {"typescript": "*"}})

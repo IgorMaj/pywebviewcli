@@ -1,7 +1,7 @@
 const initPyWebView = () => {
   return new Promise((resolve) => {
     window.addEventListener("pywebviewready", () => {
-      resolve();
+      resolve(null);
     });
   });
 };

@@ -13,8 +13,12 @@ from file_manager.methods import (
     write_json_file,
 )
 from http_manager.npm import get_latest_concurrently_version
-from templates.generate import generate_api_template, generate_cli_env_template
-from framework.detect import get_framework_name
+from templates.generate import (
+    generate_api_js_template,
+    generate_api_template,
+    generate_cli_env_template,
+)
+from framework.detect import get_framework_name, is_typescript
 from framework.action import do_additional_platform_init
 
 
@@ -74,6 +78,7 @@ def init_command(config_parser: ConfigParser):
 
     package_json_content = edit_package_json_content(package_json_content)
     frontend_framework_name = get_framework_name(package_json_content)
+    uses_typescript = is_typescript(package_json_content)
 
     write_json_file(package_json_path, package_json_content)
     env_file_content = generate_cli_env_template(get_port(frontend_framework_name))
@@ -81,4 +86,9 @@ def init_command(config_parser: ConfigParser):
 
     api_file_content = generate_api_template()
     write_file(f"{project_dir_path}/python/api.py", api_file_content)
+
+    api_js_content = generate_api_js_template(is_typescript=uses_typescript)
+    extension = "ts" if uses_typescript else "js"
+    write_file(f"{project_dir_path}/src/api.{extension}", api_js_content)
+
     do_additional_platform_init(frontend_framework_name, project_dir_path)
