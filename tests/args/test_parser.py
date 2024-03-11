@@ -13,6 +13,8 @@ class NoneArgs:
         # build args
         self.input_dir = None
         self.out_dir = None
+        # init args
+        self.package_json_path = None
 
 
 # priority 1, passed args
@@ -27,6 +29,8 @@ def test_args():
             # build args
             self.input_dir = "./input"
             self.out_dir = "./output"
+            # init args
+            self.package_json_path = "/tmp/package.json"
 
     parser = ConfigParser()
     mocked_args = MockedArgs()
@@ -39,6 +43,7 @@ def test_args():
     assert parser.debug_port() == mocked_args.debug_port
     assert parser.input_dir() == mocked_args.input_dir
     assert parser.out_dir() == mocked_args.out_dir
+    assert parser.package_json_path() == mocked_args.package_json_path
 
 
 # priority 2, env variables if none passed
@@ -50,6 +55,7 @@ def test_envs():
     os.environ["DEBUG_PORT"] = "5678"
     os.environ["INPUT_DIR"] = "./input"
     os.environ["OUT_DIR"] = "./output"
+    os.environ["PACKAGE_JSON_PATH"] = "/tmp/package.json"
 
     parser = ConfigParser()
     parser._args = NoneArgs()
@@ -61,6 +67,7 @@ def test_envs():
     assert parser.debug_port() == int(os.environ["DEBUG_PORT"])
     assert parser.input_dir() == os.environ["INPUT_DIR"]
     assert parser.out_dir() == os.environ["OUT_DIR"]
+    assert parser.package_json_path() == os.environ["PACKAGE_JSON_PATH"]
 
     del os.environ["TITLE"]
     del os.environ["URL"]
@@ -69,6 +76,7 @@ def test_envs():
     del os.environ["DEBUG_PORT"]
     del os.environ["INPUT_DIR"]
     del os.environ["OUT_DIR"]
+    del os.environ["PACKAGE_JSON_PATH"]
 
 
 # priority 3, if no args or variables are provided, fall back to defaults
@@ -87,3 +95,5 @@ def test_defaults(mock_sys_exit):
     mock_sys_exit.assert_called()
 
     assert parser.out_dir() == "./dist"
+
+    assert parser.package_json_path() == "./package.json"

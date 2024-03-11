@@ -1,6 +1,4 @@
-from pathlib import Path
 from subprocess import Popen
-from jinja2 import Environment, FileSystemLoader
 import os
 
 from args.parser import ConfigParser
@@ -13,27 +11,10 @@ from file_manager.methods import (
     get_parent_path,
     move_dir,
     remove_dir,
-    write_file_to_directory,
+    write_file,
 )
 
-
-def generate_app_template(
-    api_path: str = None, static_dirname="static", app_title="App"
-):
-    dir_path = get_parent_path(get_parent_path(__file__))
-    env = Environment(loader=FileSystemLoader(dir_path))
-    template = env.get_template(f"./templates/app.j2")
-    template_vars = {}
-
-    if api_path:
-        # get name without extension (.py)
-        api_name = Path(api_path).stem
-        template_vars["api_name"] = api_name
-
-    template_vars["static_dirname"] = static_dirname
-    template_vars["app_title"] = app_title
-
-    return template.render(template_vars)
+from templates.generate import generate_app_template
 
 
 def package_app(
@@ -64,7 +45,7 @@ def build_command(config_parser: ConfigParser):
         content = generate_app_template(
             config_parser.api_path(), unique_static_dirname, config_parser.title()
         )
-        write_file_to_directory(f"{temp_dir}/{unique_app_filename}", content)
+        write_file(f"{temp_dir}/{unique_app_filename}", content)
 
         package_app(temp_dir, unique_app_filename, unique_static_dirname)
 

@@ -2,7 +2,7 @@ PROGRAM_NAME = "pywebviewcli"
 PROGRAM_DESCRIPTION = """\
 This CLI tool aims to enhance the development experience with pywebview 
 and your chosen frontend framework/setup. It supports command-line arguments 
-and environment variables. Each command (e.g., build, dev) has its own --help option.
+and environment variables. Each command (e.g., build, dev, init) has its own --help option.
 For example, you can run 'pywebviewcli dev --help' for more details:
 """
 PROGRAM_EPILOG = """\
@@ -33,4 +33,6 @@ OUTPUT_DIR_ARG_HELP = "Path to the destination directory for the compiled (packa
 
 INPUT_PATH_REQUIRED = "Input dir path is required. Please specify it via the command-line argument or environment variables/file. Run 'pywebviewcli build --help' for more details."
 
-PROGRAM_VERSION = "0.0.5"
+PACKAGE_JSON_PATH_HELP = "Path to the project's package.json file. The parent directory of the file will be considered the project's root directory. Equivalent env variable: PACKAGE_JSON_PATH. Default: './package.json' "
+
+PROGRAM_VERSION = "0.0.7"

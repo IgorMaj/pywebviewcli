@@ -8,11 +8,13 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from args.parser import config_parser
 from commands.build import build_command
 from commands.dev import dev_command
+from commands.init import init_command
 
 
 command_map = {
     "dev": lambda parser: dev_command(parser),
     "build": lambda parser: build_command(parser),
+    "init": lambda parser: init_command(parser),
 }
 
 

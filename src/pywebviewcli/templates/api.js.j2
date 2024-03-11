@@ -1,0 +1,18 @@
+{% if is_typescript %}
+/*
+    When you extend python api, you can add typing here, thus keeping the types in sync
+*/
+interface PythonAPI {
+    /* All api methods are async by default */
+    hello: () => Promise<string>;
+}
+{% endif %}
+{% if is_typescript %}
+type GlobalObject = typeof globalThis & Window & { pywebview: { api: PythonAPI } };
+{% endif %}
+/*
+*   You can call this from anywhere in the app
+*/
+const getApi = (){% if is_typescript %}: PythonAPI{% endif %} => {% if is_typescript %}(window as GlobalObject){% endif %}{% if not is_typescript %}window{% endif %}.pywebview.api;
+
+export default getApi;
