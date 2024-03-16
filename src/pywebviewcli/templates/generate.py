@@ -22,10 +22,10 @@ def generate_app_template(
     return template.render(template_vars)
 
 
-def generate_cli_env_template(port=3000) -> str:
+def generate_cli_env_template(port=3000, input_dir="./build") -> str:
     env = Environment(loader=FileSystemLoader(get_parent_path(__file__)))
     template = env.get_template(f"./cli.env.j2")
-    template_vars = {"port": port}
+    template_vars = {"port": port, "input_dir": input_dir}
     return template.render(template_vars)
 
 

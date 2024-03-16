@@ -2,6 +2,7 @@
 import sys
 import os
 
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 # Path End
 from args.parser import ConfigParser
@@ -20,6 +21,7 @@ from templates.generate import (
 )
 from framework.detect import get_framework_name, is_typescript
 from framework.action import do_additional_platform_init
+from framework.angular import get_angular_build_output_path
 
 
 def edit_package_json_content(content: dict):
@@ -60,7 +62,7 @@ def edit_package_json_content(content: dict):
     return content
 
 
-def get_port(frontend_framework_name):
+def get_port(frontend_framework_name: str) -> int:
     if frontend_framework_name == "react":
         return 3000
     if frontend_framework_name == "angular":
@@ -68,6 +70,12 @@ def get_port(frontend_framework_name):
     if frontend_framework_name == "vue":
         return 8080
     return 3000
+
+
+def get_build_input_dir(framework_name: str, project_dir_path: str):
+    if framework_name == "angular":
+        return get_angular_build_output_path(project_dir_path)
+    return "./build"
 
 
 def init_command(config_parser: ConfigParser):
@@ -78,10 +86,16 @@ def init_command(config_parser: ConfigParser):
 
     package_json_content = edit_package_json_content(package_json_content)
     frontend_framework_name = get_framework_name(package_json_content)
-    uses_typescript = is_typescript(package_json_content)
+    uses_typescript = (
+        is_typescript(package_json_content) or frontend_framework_name is "angular"
+    )
 
     write_json_file(package_json_path, package_json_content)
-    env_file_content = generate_cli_env_template(get_port(frontend_framework_name))
+    # TODO: output input build static dirs for different platforms as well
+    env_file_content = generate_cli_env_template(
+        port=get_port(frontend_framework_name),
+        input_dir=get_build_input_dir(frontend_framework_name, project_dir_path),
+    )
     write_file(f"{project_dir_path}/cli.env", env_file_content)
 
     api_file_content = generate_api_template()
