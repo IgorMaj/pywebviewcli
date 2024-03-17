@@ -10,7 +10,7 @@ def parse_app_init_file(file_path: str):
     for line in lines:
         if line.startswith("import"):
             import_lines.append(line)
-        else:
+        elif line.strip() != "":
             # we indent, since it will end up inside the add event listener callback, for format reasons
             main_code_lines.append(f"\t{line}")
 
