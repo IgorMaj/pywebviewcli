@@ -35,4 +35,4 @@ INPUT_PATH_REQUIRED = "Input dir path is required. Please specify it via the com
 
 PACKAGE_JSON_PATH_HELP = "Path to the project's package.json file. The parent directory of the file will be considered the project's root directory. Equivalent env variable: PACKAGE_JSON_PATH. Default: './package.json' "
 
-PROGRAM_VERSION = "0.0.7"
+PROGRAM_VERSION = "0.0.8"

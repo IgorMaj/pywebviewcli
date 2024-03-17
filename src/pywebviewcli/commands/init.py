@@ -91,7 +91,6 @@ def init_command(config_parser: ConfigParser):
     )
 
     write_json_file(package_json_path, package_json_content)
-    # TODO: output input build static dirs for different platforms as well
     env_file_content = generate_cli_env_template(
         port=get_port(frontend_framework_name),
         input_dir=get_build_input_dir(frontend_framework_name, project_dir_path),
