@@ -68,13 +68,15 @@ def get_port(frontend_framework_name: str) -> int:
     if frontend_framework_name == "angular":
         return 4200
     if frontend_framework_name == "vue":
-        return 8080
+        return 5173
     return 3000
 
 
 def get_build_input_dir(framework_name: str, project_dir_path: str):
     if framework_name == "angular":
         return get_angular_build_output_path(project_dir_path)
+    if framework_name == "vue":
+        return "./dist"
     return "./build"
 
 
