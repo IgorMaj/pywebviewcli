@@ -31,6 +31,12 @@ def get_framework_name(package_json: dict) -> str:
 
 def is_typescript(package_json: dict) -> bool:
     try:
-        return bool(package_json["dependencies"]["typescript"])
+        return (
+            "dependencies" in package_json
+            and "typescript" in package_json["dependencies"]
+        ) or (
+            "devDependencies" in package_json
+            and "typescript" in package_json["devDependencies"]
+        )
     except:
         return False
